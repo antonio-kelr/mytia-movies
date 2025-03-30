@@ -2,19 +2,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
 
-const Nav = styled.nav`
+const NavWrapper = styled.div`
   background-color: #1a1a1a;
-  padding: 1rem 2rem;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const Nav = styled.nav`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding:  0px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
@@ -160,6 +166,7 @@ const SearchInput = styled.input`
   color: white;
   font-size: 0.9rem;
   width: 200px;
+  height: 42px;
   transition: all 0.2s;
 
   &::placeholder {
@@ -174,6 +181,7 @@ const SearchInput = styled.input`
 
   @media (max-width: 768px) {
     width: 150px;
+    height: 38px;
     font-size: 0.8rem;
     padding: 0.6rem 1rem;
 
@@ -184,6 +192,7 @@ const SearchInput = styled.input`
 
   @media (max-width: 480px) {
     width: 100%;
+    height: 42px;
     padding: 1rem;
     font-size: 1rem;
 
@@ -203,6 +212,8 @@ const SearchButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  height: 42px;
+  font-size: 0.9rem;
 
   &:hover {
     background-color: #ffd700;
@@ -210,13 +221,15 @@ const SearchButton = styled.button`
 
   @media (max-width: 768px) {
     padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    height: 38px;
   }
 
   @media (max-width: 480px) {
     width: 100%;
     padding: 1rem;
     font-size: 1rem;
+    height: 42px;
   }
 `;
 
@@ -240,30 +253,32 @@ export const Navbar = () => {
 
   return (
     <>
-      <Nav>
-        <Logo to="/">
-          <span>🎬</span> MyTia Movies
-        </Logo>
-        <NavLinks>
-          <NavLink to="/">Início</NavLink>
-          <NavLink to="/movies">Filmes</NavLink>
-          <NavLink to="/popular">Populares</NavLink>
-          <SearchContainer>
-            <form onSubmit={handleSearch}>
-              <SearchInput
-                type="text"
-                placeholder="Buscar filmes..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <SearchButton type="submit">Buscar</SearchButton>
-            </form>
-          </SearchContainer>
-        </NavLinks>
-        <MobileMenuButton onClick={toggleMobileMenu}>
-          {isMobileMenuOpen ? '✕' : '☰'}
-        </MobileMenuButton>
-      </Nav>
+      <NavWrapper>
+        <Nav>
+          <Logo to="/">
+            <span>🎬</span> MyTia Movies
+          </Logo>
+          <NavLinks>
+            <NavLink to="/">Início</NavLink>
+            <NavLink to="/movies">Filmes</NavLink>
+            <NavLink to="/popular">Populares</NavLink>
+            <SearchContainer>
+              <form onSubmit={handleSearch}>
+                <SearchInput
+                  type="text"
+                  placeholder="Buscar filmes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <SearchButton type="submit">Buscar</SearchButton>
+              </form>
+            </SearchContainer>
+          </NavLinks>
+          <MobileMenuButton onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </MobileMenuButton>
+        </Nav>
+      </NavWrapper>
       <MobileNav isOpen={isMobileMenuOpen}>
         <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Início</NavLink>
         <NavLink to="/movies" onClick={() => setIsMobileMenuOpen(false)}>Filmes</NavLink>

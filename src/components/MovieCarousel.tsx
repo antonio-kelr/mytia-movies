@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { MovieCard } from './MovieCard';
 import { Movie } from '../types/movie';
+import { PrimeIcons } from 'primereact/api';
 
 const CarouselContainer = styled.div`
   position: relative;
@@ -63,10 +64,18 @@ const CarouselButton = styled.button<{ direction: 'left' | 'right' }>`
     cursor: not-allowed;
   }
 
+  i {
+    font-size: 1.2rem;
+  }
+
   @media (max-width: 768px) {
     width: 30px;
     
     height: 30px;
+
+    i {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -77,7 +86,7 @@ interface MovieCarouselProps {
 export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
   const [translateX, setTranslateX] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const itemWidth = 220; // 200px do item + 20px de gap
+  const itemWidth = 280; // 260px do item + 20px de gap
   const maxTranslate = -(movies.length * itemWidth - (carouselRef.current?.offsetWidth || 0));
 
   const handlePrev = () => {
@@ -95,7 +104,7 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
         onClick={handlePrev}
         disabled={translateX >= 0}
       >
-        ←
+        <i className={PrimeIcons.ANGLE_LEFT}></i>
       </CarouselButton>
       <CarouselContent translateX={translateX}>
         {movies.map(movie => (
@@ -109,7 +118,7 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
         onClick={handleNext}
         disabled={translateX <= maxTranslate}
       >
-        →
+        <i className={PrimeIcons.ANGLE_RIGHT}></i>
       </CarouselButton>
     </CarouselContainer>
   );
