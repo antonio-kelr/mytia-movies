@@ -61,7 +61,7 @@ const CarouselButton = styled.button<{ direction: 'left' | 'right' }>`
 
   &:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
+    // cursor: not-allowed;
   }
 
   i {
