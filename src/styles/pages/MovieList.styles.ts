@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
+          border:1px solid red;
+
   min-height: calc(100vh - 60px);
   padding: 20px;
   margin-top: 100px;
@@ -46,6 +48,7 @@ export const Grid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
+
   }
 `;
 

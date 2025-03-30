@@ -17,42 +17,44 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
   const [translateX, setTranslateX] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [maxTranslate, setMaxTranslate] = useState(0);
-  const itemWidth = 280; // 260px do item + 20px de gap
-  
-  // Duplicate the movies array to create the illusion of infinite scroll
-  const duplicatedMovies = [...movies, ...movies, ...movies];
+  const [itemWidth, setItemWidth] = useState(280); // valor inicial para desktop
 
   useEffect(() => {
-    if (carouselRef.current) {
-      const containerWidth = carouselRef.current.offsetWidth;
-      const totalWidth = duplicatedMovies.length * itemWidth;
-      setMaxTranslate(containerWidth - totalWidth);
-      
-      // Start from the middle set of movies
-      setTranslateX(-movies.length * itemWidth);
-    }
+    const updateCarouselDimensions = () => {
+      if (carouselRef.current) {
+        // Define a largura do item com base no tamanho da tela
+        let newItemWidth = 280; // desktop (260px + 20px gap)
+        if (window.innerWidth <= 768) {
+          newItemWidth = 155; // tablet (140px + 15px gap)
+        }
+        if (window.innerWidth <= 480) {
+          newItemWidth = 135; // mobile (120px + 15px gap)
+        }
+
+        setItemWidth(newItemWidth);
+
+        const containerWidth = carouselRef.current.offsetWidth - 80; // subtrai o padding (40px de cada lado)
+        const totalWidth = movies.length * newItemWidth;
+        setMaxTranslate(Math.min(0, containerWidth - totalWidth));
+        // Reseta a posição se necessário
+        setTranslateX(prev => Math.max(Math.min(0, prev), containerWidth - totalWidth));
+      }
+    };
+
+    updateCarouselDimensions();
+    window.addEventListener('resize', updateCarouselDimensions);
+
+    return () => {
+      window.removeEventListener('resize', updateCarouselDimensions);
+    };
   }, [movies.length]);
 
   const handlePrev = () => {
-    setTranslateX(prev => {
-      const newTranslate = prev + itemWidth;
-      // If we're at the start of the first set, jump to the middle set
-      if (newTranslate > -itemWidth) {
-        return -movies.length * itemWidth;
-      }
-      return newTranslate;
-    });
+    setTranslateX(prev => Math.min(0, prev + itemWidth));
   };
 
   const handleNext = () => {
-    setTranslateX(prev => {
-      const newTranslate = prev - itemWidth;
-      // If we're at the end of the last set, jump to the middle set
-      if (newTranslate < maxTranslate) {
-        return -movies.length * itemWidth;
-      }
-      return newTranslate;
-    });
+    setTranslateX(prev => Math.max(maxTranslate, prev - itemWidth));
   };
 
   return (
@@ -60,12 +62,13 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
       <CarouselButton
         direction="left"
         onClick={handlePrev}
+        disabled={translateX >= 0}
       >
         <i className={PrimeIcons.ANGLE_LEFT}></i>
       </CarouselButton>
       <CarouselContent $translateX={translateX}>
-        {duplicatedMovies.map((movie, index) => (
-          <CarouselItem key={`${movie.id}-${index}`}>
+        {movies.map((movie) => (
+          <CarouselItem key={movie.id}>
             <MovieCard movie={movie} />
           </CarouselItem>
         ))}
@@ -73,6 +76,7 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
       <CarouselButton
         direction="right"
         onClick={handleNext}
+        disabled={translateX <= maxTranslate}
       >
         <i className={PrimeIcons.ANGLE_RIGHT}></i>
       </CarouselButton>
