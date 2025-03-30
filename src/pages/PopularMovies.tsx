@@ -61,7 +61,7 @@ const Grid = styled.div`
 `;
 
 const PaginationContainer = styled.div`
-  // margin-top: 20px;
+  margin-top: 20px;
   padding: 20px 0;
   display: flex;
   justify-content: center;
@@ -114,6 +114,53 @@ const PaginationContainer = styled.div`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  @media (max-width: 768px) {
+    .p-paginator {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .p-paginator .p-paginator-pages .p-paginator-page {
+      min-width: 2rem;
+      height: 2rem;
+      margin: 0 0.1rem;
+      font-size: 0.875rem;
+    }
+
+    .p-paginator .p-paginator-first,
+    .p-paginator .p-paginator-prev,
+    .p-paginator .p-paginator-next,
+    .p-paginator .p-paginator-last {
+      min-width: 2rem;
+      height: 2rem;
+      margin: 0 0.1rem;
+    }
+
+    .p-paginator .p-paginator-pages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .p-paginator .p-paginator-pages .p-paginator-page {
+      min-width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.75rem;
+    }
+
+    .p-paginator .p-paginator-first,
+    .p-paginator .p-paginator-prev,
+    .p-paginator .p-paginator-next,
+    .p-paginator .p-paginator-last {
+      min-width: 1.75rem;
+      height: 1.75rem;
+    }
+  }
 `;
 
 export const PopularMovies = () => {
@@ -147,4 +194,4 @@ export const PopularMovies = () => {
       </Content>
     </Container>
   );
-}; 
+};
