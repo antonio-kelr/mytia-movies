@@ -1,7 +1,7 @@
 # MyTia Movies
 
 Uma aplicação web moderna para descobrir e explorar filmes, desenvolvida com React e TypeScript. O projeto utiliza a API do The Movie Database (TMDb) para fornecer informações atualizadas sobre filmes populares, permitindo aos usuários descobrir novos filmes e buscar por títulos específicos.
-(assets/img-movies.png)
+![Image](https://github.com/user-attachments/assets/a82e27ee-75e5-4b8e-8c13-d4b441b6d0a8)
 
 
 ## 💡 Sobre o Projeto
