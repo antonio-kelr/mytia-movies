@@ -1,6 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import debounce from 'lodash/debounce';
 
 const NavWrapper = styled.div`
   background: rgba(26, 26, 26, 0.95);
@@ -192,7 +193,7 @@ const MobileSearchContainer = styled.div`
 const SearchInput = styled.input`
   padding: 0.8rem 1.2rem;
   border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
   color: white;
   font-size: 1rem;
@@ -234,52 +235,95 @@ const SearchInput = styled.input`
   }
 `;
 
-const SearchButton = styled.button`
-  background: #f5c518;
-  color: #1a1a1a;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  height: 45px;
-  font-size: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
-  &:hover {
-    background: #ffd700;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+const ErrorMessage = styled.div`
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  z-index: 1001;
+  animation: slideDown 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+
+  @keyframes slideDown {
+    from {
+      transform: translate(-50%, -100%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
   }
 
   @media (max-width: 768px) {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.9rem;
-    height: 40px;
-  }
-
-  @media (max-width: 480px) {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    height: 45px;
+    top: 70px;
+    width: 90%;
+    text-align: center;
   }
 `;
 
 export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const debouncedSearch = useCallback(
+    debounce(async (query: string) => {
+      if (query.trim()) {
+        try {
+          // Aqui você pode adicionar uma chamada à API para verificar se existem resultados
+          // Por exemplo: const response = await fetch(`/api/search?q=${query}`);
+          // if (!response.ok) throw new Error('Erro na busca');
+          
+          navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
+          setError(null);
+        } catch (err) {
+          setError('Não foi possível encontrar resultados para sua busca. Tente novamente.');
+          setTimeout(() => setError(null), 5000); // Remove o erro após 5 segundos
+        }
+      } else {
+        navigate(location.pathname);
+        setError(null);
+      }
+    }, 500),
+    [navigate, location.pathname]
+  );
+
+  useEffect(() => {
+    debouncedSearch(searchQuery);
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchQuery, debouncedSearch]);
+
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-      setIsMobileMenuOpen(false);
+      try {
+        // Aqui você pode adicionar uma chamada à API para verificar se existem resultados
+        // Por exemplo: const response = await fetch(`/api/search?q=${query}`);
+        // if (!response.ok) throw new Error('Erro na busca');
+        
+        navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
+        setError(null);
+      } catch (err) {
+        setError('Não foi possível encontrar resultados para sua busca. Tente novamente.');
+        setTimeout(() => setError(null), 5000); // Remove o erro após 5 segundos
+      }
+    } else {
+      navigate(location.pathname);
+      setError(null);
     }
+    setIsMobileMenuOpen(false);
   };
 
   const toggleMobileMenu = () => {
@@ -301,11 +345,12 @@ export const Navbar = () => {
               <form onSubmit={handleSearch}>
                 <SearchInput
                   type="text"
+                  
                   placeholder="Buscar filmes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  autoComplete="off"
                 />
-                <SearchButton type="submit">Buscar</SearchButton>
               </form>
             </SearchContainer>
           </NavLinks>
@@ -314,6 +359,7 @@ export const Navbar = () => {
           </MobileMenuButton>
         </Nav>
       </NavWrapper>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       <MobileNav className={isMobileMenuOpen ? 'open' : ''}>
         <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Início</NavLink>
         <NavLink to="/movies" onClick={() => setIsMobileMenuOpen(false)}>Filmes</NavLink>
@@ -325,8 +371,8 @@ export const Navbar = () => {
               placeholder="Buscar filmes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              autoComplete="off"
             />
-            <SearchButton type="submit">Buscar</SearchButton>
           </form>
         </MobileSearchContainer>
       </MobileNav>
