@@ -17,7 +17,8 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  max-width: 1200px;
+    max-width: 1400px;
+
   margin: 0 auto;
   width: 100%;
 `;
@@ -43,7 +44,7 @@ const Title = styled.h2`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
   width: 100%;
 

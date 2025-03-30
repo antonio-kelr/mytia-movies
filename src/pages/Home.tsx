@@ -12,6 +12,7 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 60px);
   padding: 20px;
+  
   background-color: #f5f5f5;
   margin-top: 60px;
 `;
@@ -19,6 +20,7 @@ const Container = styled.div`
 const Content = styled.div`
   max-width: 1300px;
   margin: 0 auto;
+  
   width: 100%;
 `;
 
@@ -26,6 +28,7 @@ const Section = styled.section`
   background: white;
   padding: 20px;
   border-radius: 8px;
+  
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -34,6 +37,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 1.8rem;
   padding-bottom: 10px;
+  
   border-bottom: 2px solid #f5c518;
 
   @media (max-width: 768px) {
@@ -43,9 +47,10 @@ const Title = styled.h2`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
   width: 100%;
+  
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -57,6 +62,7 @@ const PaginationContainer = styled.div`
   margin-top: 20px;
   padding: 20px 0;
   display: flex;
+  
   justify-content: center;
 
   .p-paginator {
@@ -88,6 +94,7 @@ const PaginationContainer = styled.div`
   .p-paginator .p-paginator-last {
     min-width: 2.5rem;
     height: 2.5rem;
+    
     margin: 0 0.2rem;
     border-radius: 4px;
     transition: all 0.2s;

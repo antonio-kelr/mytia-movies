@@ -6,6 +6,7 @@ import { Movie } from '../types/movie';
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
+
   overflow: hidden;
   margin: 20px 0;
   z-index: 1;
@@ -14,13 +15,15 @@ const CarouselContainer = styled.div`
 const CarouselContent = styled.div<{ translateX: number }>`
   display: flex;
   gap: 20px;
+  
+  
   transition: transform 0.3s ease-in-out;
   transform: translateX(${props => props.translateX}px);
   padding: 10px 0;
 `;
 
 const CarouselItem = styled.div`
-  flex: 0 0 200px;
+  flex: 0 0 260px; /* Largura fixa */
   transition: transform 0.2s;
 
   &:hover {
@@ -41,6 +44,7 @@ const CarouselButton = styled.button<{ direction: 'left' | 'right' }>`
   color: white;
   border: none;
   width: 40px;
+  
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
@@ -61,6 +65,7 @@ const CarouselButton = styled.button<{ direction: 'left' | 'right' }>`
 
   @media (max-width: 768px) {
     width: 30px;
+    
     height: 30px;
   }
 `;
