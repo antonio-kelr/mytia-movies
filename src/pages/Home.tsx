@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { MovieCard } from '../components/MovieCard';
-import { MovieCarousel } from '../components/MovieCarousel';
-import { useMovies } from '../hooks/useMovies';
-import { Paginator } from 'primereact/paginator';
+import { useState } from "react";
+import styled from "styled-components";
+import { MovieCard } from "../components/MovieCard";
+import { MovieCarousel } from "../components/MovieCarousel";
+import { useMovies } from "../hooks/useMovies";
+import { Paginator } from "primereact/paginator";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -17,13 +17,12 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   width: 100%;
 `;
 
 const Section = styled.section`
-  margin-bottom: 40px;
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -39,25 +38,6 @@ const Title = styled.h2`
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
-  }
-`;
-
-const SearchInput = styled.input`
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  outline: none;
-
-  &:focus {
-    border-color: #007bff;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    padding: 10px;
   }
 `;
 
@@ -132,15 +112,19 @@ const PaginationContainer = styled.div`
 export const Home = () => {
   const [searchPage, setSearchPage] = useState(0);
   const [popularPage, setPopularPage] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const { movies: searchResults, loading: searchLoading, error: searchError, totalPages: searchTotalPages } = useMovies(searchPage + 1, searchQuery);
-  const { movies: popularMovies, loading: popularLoading, error: popularError, totalPages: popularTotalPages } = useMovies(popularPage + 1);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setSearchPage(0);
-  };
+  const {
+    movies: searchResults,
+    loading: searchLoading,
+    error: searchError,
+    totalPages: searchTotalPages,
+  } = useMovies(searchPage + 1);
+  const {
+    movies: popularMovies,
+    loading: popularLoading,
+    error: popularError,
+    totalPages: popularTotalPages,
+  } = useMovies(popularPage + 1);
 
   if (searchLoading || popularLoading) return <div>Carregando...</div>;
   if (searchError || popularError) return <div>Erro ao carregar os filmes</div>;
@@ -148,13 +132,6 @@ export const Home = () => {
   return (
     <Container>
       <Content>
-        <SearchInput
-          type="text"
-          placeholder="Buscar filmes..."
-          value={searchQuery}
-          onChange={handleSearch}
-        />
-
         <Section>
           <Title>Filmes Populares</Title>
           <MovieCarousel movies={popularMovies} />
@@ -167,12 +144,10 @@ export const Home = () => {
               template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
             />
           </PaginationContainer>
-        </Section>
 
-        <Section>
-          <Title>Resultados da Busca</Title>
+          <Title>Filmes em Destaque</Title>
           <Grid>
-            {searchResults.map(movie => (
+            {searchResults.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </Grid>
@@ -190,4 +165,4 @@ export const Home = () => {
       </Content>
     </Container>
   );
-}; 
+};

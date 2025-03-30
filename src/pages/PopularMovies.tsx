@@ -11,6 +11,8 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 60px);
   padding: 20px;
+     margin-top: 60px;
+
   background-color: #f5f5f5;
 `;
 
@@ -52,7 +54,7 @@ const Grid = styled.div`
 `;
 
 const PaginationContainer = styled.div`
-  margin-top: 20px;
+  // margin-top: 20px;
   padding: 20px 0;
   display: flex;
   justify-content: center;
