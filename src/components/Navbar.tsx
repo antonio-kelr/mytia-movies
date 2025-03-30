@@ -9,7 +9,6 @@ const NavWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  
   right: 0;
   z-index: 1000;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
@@ -22,7 +21,8 @@ const NavWrapper = styled.div`
 const Nav = styled.nav`
   max-width: 1400px;
   margin: 0 auto;
-   padding: 0 20px;
+   padding: 20px 0px;
+
    
   height: 70px;
   display: flex;
@@ -131,6 +131,8 @@ const MobileNav = styled.div`
   position: fixed;
   top: 60px;
   left: 0;
+
+  
   right: 0;
   
   bottom: 0;
@@ -138,7 +140,7 @@ const MobileNav = styled.div`
   padding: 2rem 1rem;
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
-  z-index: 999;
+  z-index: 1233;
   overflow-y: auto;
   backdrop-filter: blur(10px);
 
@@ -183,32 +185,6 @@ const SearchContainer = styled.div`
   }
 `;
 
-// const MobileSearchContainer = styled.div`
-//   display: none;
-//   width: 100%;
-//   position: relative;
-//   margin-top: 1rem;
-
-//   form {
-//     position: relative;
-//     width: 100%;
-//   }
-
-//   .pi-search {
-//     position: absolute;
-//     left: 12px;
-//     top: 50%;
-//     transform: translateY(-50%);
-//     color: rgba(255, 255, 255, 0.5);
-//     font-size: 1rem;
-//     pointer-events: none;
-//     z-index: 1;
-//   }
-
-//   @media (max-width: 480px) {
-//     display: block;
-//   }
-// `;
 
 const SearchInput = styled.input`
   padding: 0.8rem 1.2rem 0.8rem 2.5rem;
@@ -218,6 +194,7 @@ const SearchInput = styled.input`
   color: white;
   font-size: 1rem;
   width: 250px;
+  
   
   height: 45px;
   
@@ -286,7 +263,6 @@ const ErrorMessage = styled.div`
 `;
 const SearchContainerMobile = styled(SearchContainer)`
   display: none;
-    // border: 3px solid red;
 
   margin: 0;
   width: 100%;
