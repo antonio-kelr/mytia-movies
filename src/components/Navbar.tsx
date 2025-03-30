@@ -17,7 +17,7 @@ const Nav = styled.nav`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
   }
 `;
 
@@ -37,6 +37,10 @@ const Logo = styled(Link)`
   @media (max-width: 768px) {
     font-size: 1.2rem;
   }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const NavLinks = styled.div`
@@ -47,16 +51,60 @@ const NavLinks = styled.div`
   @media (max-width: 768px) {
     gap: 1rem;
   }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: #f5c518;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+
+  @media (max-width: 480px) {
+    display: block;
+  }
+`;
+
+const MobileNav = styled.div<{ isOpen: boolean }>`
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1a1a1a;
+  padding: 1rem;
+  transform: translateY(${props => props.isOpen ? '0' : '-100%'});
+  transition: transform 0.3s ease-in-out;
+  z-index: 999;
+  overflow-y: auto;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const NavLink = styled(Link)`
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  padding: 0.8rem 1.2rem;
+  border-radius: 4px;
+  display: block;
 
   &:hover {
     color: #f5c518;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   &.active {
@@ -66,6 +114,13 @@ const NavLink = styled(Link)`
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -78,10 +133,27 @@ const SearchContainer = styled.div`
   @media (max-width: 768px) {
     margin-left: 1rem;
   }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+`;
+
+const MobileSearchContainer = styled.div`
+  display: none;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0 1rem;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
 `;
 
 const SearchInput = styled.input`
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1.2rem;
   border: none;
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -103,9 +175,20 @@ const SearchInput = styled.input`
   @media (max-width: 768px) {
     width: 150px;
     font-size: 0.8rem;
+    padding: 0.6rem 1rem;
 
     &:focus {
       width: 180px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+
+    &:focus {
+      width: 100%;
     }
   }
 `;
@@ -114,24 +197,32 @@ const SearchButton = styled.button`
   background-color: #f5c518;
   color: #1a1a1a;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 
   &:hover {
     background-color: #ffd700;
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem 0.8rem;
+    padding: 0.6rem 1rem;
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
   }
 `;
 
 export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -139,19 +230,45 @@ export const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
+      setIsMobileMenuOpen(false);
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <Nav>
-      <Logo to="/">
-        <span>🎬</span> MyTia Movies
-      </Logo>
-      <NavLinks>
-        <NavLink to="/">Início</NavLink>
-        <NavLink to="/movies">Filmes</NavLink>
-        <NavLink to="/popular">Populares</NavLink>
-        <SearchContainer>
+    <>
+      <Nav>
+        <Logo to="/">
+          <span>🎬</span> MyTia Movies
+        </Logo>
+        <NavLinks>
+          <NavLink to="/">Início</NavLink>
+          <NavLink to="/movies">Filmes</NavLink>
+          <NavLink to="/popular">Populares</NavLink>
+          <SearchContainer>
+            <form onSubmit={handleSearch}>
+              <SearchInput
+                type="text"
+                placeholder="Buscar filmes..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <SearchButton type="submit">Buscar</SearchButton>
+            </form>
+          </SearchContainer>
+        </NavLinks>
+        <MobileMenuButton onClick={toggleMobileMenu}>
+          {isMobileMenuOpen ? '✕' : '☰'}
+        </MobileMenuButton>
+      </Nav>
+      <MobileNav isOpen={isMobileMenuOpen}>
+        <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Início</NavLink>
+        <NavLink to="/movies" onClick={() => setIsMobileMenuOpen(false)}>Filmes</NavLink>
+        <NavLink to="/popular" onClick={() => setIsMobileMenuOpen(false)}>Populares</NavLink>
+        <MobileSearchContainer>
           <form onSubmit={handleSearch}>
             <SearchInput
               type="text"
@@ -161,8 +278,8 @@ export const Navbar = () => {
             />
             <SearchButton type="submit">Buscar</SearchButton>
           </form>
-        </SearchContainer>
-      </NavLinks>
-    </Nav>
+        </MobileSearchContainer>
+      </MobileNav>
+    </>
   );
 }; 
