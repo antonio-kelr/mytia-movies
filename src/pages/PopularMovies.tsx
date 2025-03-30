@@ -11,7 +11,8 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 60px);
   padding: 20px;
-     margin-top: 60px;
+      margin-top: 100px;
+
 
   background-color: #f5f5f5;
 `;

@@ -12,7 +12,8 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 60px);
   padding: 20px;
-    margin-top: 60px;
+     margin-top: 100px;
+
 
   background-color: #f5f5f5;
 `;
@@ -43,24 +44,6 @@ const Title = styled.h2`
   }
 `;
 
-const SearchInput = styled.input`
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  outline: none;
-
-  &:focus {
-    border-color: #007bff;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    padding: 10px;
-  }
-`;
 
 const Grid = styled.div`
   display: grid;
@@ -148,11 +131,6 @@ export const Movies = () => {
       <Content>
         <Section>
           <Title>{searchQuery ? `Resultados para: ${searchQuery}` : 'Filmes'}</Title>
-          <SearchInput
-            type="text"
-            placeholder="Buscar filmes..."
-            value={searchQuery}
-          />
           <Grid>
             {movies.map(movie => (
               <MovieCard key={movie.id} movie={movie} />

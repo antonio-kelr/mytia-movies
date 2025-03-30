@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { MovieCard } from './MovieCard';
 import { Movie } from '../types/movie';
@@ -13,13 +13,13 @@ const CarouselContainer = styled.div`
   z-index: 1;
 `;
 
-const CarouselContent = styled.div<{ translateX: number }>`
+const CarouselContent = styled.div<{ $translateX: number }>`
   display: flex;
   gap: 20px;
   
   
   transition: transform 0.3s ease-in-out;
-  transform: translateX(${props => props.translateX}px);
+  transform: translateX(${props => props.$translateX}px);
   padding: 10px 0;
 `;
 
@@ -86,8 +86,16 @@ interface MovieCarouselProps {
 export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
   const [translateX, setTranslateX] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const itemWidth = 280; // 260px do item + 20px de gap
-  const maxTranslate = -(movies.length * itemWidth - (carouselRef.current?.offsetWidth || 0));
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      const containerWidth = carouselRef.current.offsetWidth;
+      const totalWidth = movies.length * itemWidth;
+      setMaxTranslate(containerWidth - totalWidth);
+    }
+  }, [movies.length]);
 
   const handlePrev = () => {
     setTranslateX(prev => Math.min(0, prev + itemWidth));
@@ -106,7 +114,7 @@ export const MovieCarousel = ({ movies }: MovieCarouselProps) => {
       >
         <i className={PrimeIcons.ANGLE_LEFT}></i>
       </CarouselButton>
-      <CarouselContent translateX={translateX}>
+      <CarouselContent $translateX={translateX}>
         {movies.map(movie => (
           <CarouselItem key={movie.id}>
             <MovieCard movie={movie} />
