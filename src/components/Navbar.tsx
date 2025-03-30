@@ -183,18 +183,6 @@ export const Navbar = () => {
         <NavLink to="/popular" onClick={() => setIsMobileMenuOpen(false)}>
           Populares
         </NavLink>
-        {/* <MobileSearchContainer>
-          <form onSubmit={handleSearch}>
-            <i className="pi pi-search"></i>
-            <SearchInput
-              type="text"
-              placeholder="Buscar filmes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoComplete="off"
-            />
-          </form>
-        </MobileSearchContainer> */}
       </MobileNav>
     </>
   );

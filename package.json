@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.16",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.8.4",
+    "lodash": "^4.17.21",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",
     "react": "^19.0.0",
