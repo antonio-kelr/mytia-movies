@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
 const NavWrapper = styled.div`
@@ -9,17 +9,21 @@ const NavWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  
   right: 0;
   z-index: 1000;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+
 `;
 
 const Nav = styled.nav`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+   padding: 0 20px;
+   
   height: 70px;
   display: flex;
   align-items: center;
@@ -38,7 +42,7 @@ const Logo = styled(Link)`
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 
@@ -47,18 +51,47 @@ const Logo = styled(Link)`
     transform: translateY(-2px);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     font-size: 1.5rem;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 900px) {
     font-size: 1.3rem;
+  }
+`;
+
+const NavLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
+  
+
+  &:hover {
+    color: #f5c518;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
   }
 `;
 
 const NavLinks = styled.div`
   display: flex;
   gap: 2.5rem;
+
   align-items: center;
 
   @media (max-width: 768px) {
@@ -78,15 +111,18 @@ const MobileMenuButton = styled.button`
   font-size: 1.8rem;
   cursor: pointer;
   padding: 0.5rem;
+  
   z-index: 1001;
   transition: all 0.3s ease;
 
   &:hover {
-    transform: scale(1.1);
+    color: #ffd700;
   }
 
   @media (max-width: 480px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -96,92 +132,19 @@ const MobileNav = styled.div`
   top: 60px;
   left: 0;
   right: 0;
+  
   bottom: 0;
-  background: rgba(26, 26, 26, 0.95);
-  padding: 2rem;
-  transform: translateY(-100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(26, 26, 26, 0.98);
+  padding: 2rem 1rem;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
   z-index: 999;
   overflow-y: auto;
   backdrop-filter: blur(10px);
 
   &.open {
-    transform: translateY(0);
+    transform: translateX(0);
   }
-
-  @media (max-width: 480px) {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-`;
-
-const NavLink = styled(Link)`
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  display: block;
-  position: relative;
-  font-weight: 500;
-
-  &:hover {
-    color: #f5c518;
-    background: rgba(245, 197, 24, 0.1);
-  }
-
-  &.active {
-    color: #f5c518;
-    font-weight: 600;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 3px;
-      background: #f5c518;
-      border-radius: 2px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    padding: 0.6rem 1rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 1.2rem;
-  }
-`;
-
-const SearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: 2rem;
-
-  @media (max-width: 768px) {
-    margin-left: 1rem;
-  }
-
-  @media (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const MobileSearchContainer = styled.div`
-  display: none;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0 1rem;
 
   @media (max-width: 480px) {
     display: flex;
@@ -190,15 +153,74 @@ const MobileSearchContainer = styled.div`
   }
 `;
 
+const SearchContainer = styled.div`
+  position: relative;
+  margin-left: 2rem;
+  
+  
+
+  form {
+    position: relative;
+  }
+
+  .pi-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 960px) {
+    display: none;
+  }
+`;
+
+// const MobileSearchContainer = styled.div`
+//   display: none;
+//   width: 100%;
+//   position: relative;
+//   margin-top: 1rem;
+
+//   form {
+//     position: relative;
+//     width: 100%;
+//   }
+
+//   .pi-search {
+//     position: absolute;
+//     left: 12px;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     color: rgba(255, 255, 255, 0.5);
+//     font-size: 1rem;
+//     pointer-events: none;
+//     z-index: 1;
+//   }
+
+//   @media (max-width: 480px) {
+//     display: block;
+//   }
+// `;
+
 const SearchInput = styled.input`
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.2rem 0.8rem 2.5rem;
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
   color: white;
   font-size: 1rem;
   width: 250px;
+  
   height: 45px;
+  
   transition: all 0.3s ease;
 
   &::placeholder {
@@ -216,7 +238,6 @@ const SearchInput = styled.input`
     width: 200px;
     height: 40px;
     font-size: 0.9rem;
-    padding: 0.7rem 1rem;
 
     &:focus {
       width: 220px;
@@ -226,15 +247,14 @@ const SearchInput = styled.input`
   @media (max-width: 480px) {
     width: 100%;
     height: 45px;
-    padding: 1rem;
     font-size: 1rem;
+    padding: 0.8rem 1.2rem 0.8rem 2.5rem;
 
     &:focus {
       width: 100%;
     }
   }
 `;
-
 
 const ErrorMessage = styled.div`
   position: fixed;
@@ -250,6 +270,8 @@ const ErrorMessage = styled.div`
   animation: slideDown 0.3s ease-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
+  max-width: 90%;
+  text-align: center;
 
   @keyframes slideDown {
     from {
@@ -261,13 +283,34 @@ const ErrorMessage = styled.div`
       opacity: 1;
     }
   }
-
-  @media (max-width: 768px) {
-    top: 70px;
-    width: 90%;
-    text-align: center;
-  }
 `;
+const SearchContainerMobile = styled(SearchContainer)`
+  display: none;
+    // border: 3px solid red;
+
+  margin: 0;
+  width: 100%;
+  padding: 10px;
+
+  form {
+    width: 100%;
+  }
+
+  ${SearchInput} {
+    width: 100%;
+    
+
+    &:focus {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 960px) {
+    display: block;
+  }
+
+`;
+
 
 export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -275,6 +318,25 @@ export const Navbar = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Create refs for search inputs
+  const desktopSearchRef = useRef<HTMLInputElement>(null);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
+
+  // Add click outside handler for search inputs
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        (desktopSearchRef.current && !desktopSearchRef.current.contains(event.target as Node)) &&
+        (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target as Node))
+      ) {
+        setSearchQuery('');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
@@ -309,26 +371,46 @@ export const Navbar = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       try {
-        // Aqui você pode adicionar uma chamada à API para verificar se existem resultados
-        // Por exemplo: const response = await fetch(`/api/search?q=${query}`);
-        // if (!response.ok) throw new Error('Erro na busca');
-        
         navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
         setError(null);
+        setIsMobileMenuOpen(false);
       } catch (err) {
         setError('Não foi possível encontrar resultados para sua busca. Tente novamente.');
-        setTimeout(() => setError(null), 5000); // Remove o erro após 5 segundos
+        setTimeout(() => setError(null), 5000);
       }
     } else {
       navigate(location.pathname);
       setError(null);
     }
-    setIsMobileMenuOpen(false);
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const mobileNav = document.querySelector('.mobile-nav');
+      const mobileButton = document.querySelector('.mobile-button');
+      if (
+        isMobileMenuOpen &&
+        mobileNav &&
+        !mobileNav.contains(event.target as Node) &&
+        !mobileButton?.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   return (
     <>
@@ -343,29 +425,62 @@ export const Navbar = () => {
             <NavLink to="/popular">Populares</NavLink>
             <SearchContainer>
               <form onSubmit={handleSearch}>
+                <i className="pi pi-search"></i>
                 <SearchInput
+                  ref={desktopSearchRef}
                   type="text"
-                  
                   placeholder="Buscar filmes..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    debouncedSearch(e.target.value);
+                  }}
                   autoComplete="off"
                 />
               </form>
             </SearchContainer>
           </NavLinks>
-          <MobileMenuButton onClick={toggleMobileMenu}>
+          <MobileMenuButton 
+            onClick={toggleMobileMenu}
+            className="mobile-button"
+            aria-label="Toggle menu"
+          >
             {isMobileMenuOpen ? '✕' : '☰'}
           </MobileMenuButton>
         </Nav>
-      </NavWrapper>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-      <MobileNav className={isMobileMenuOpen ? 'open' : ''}>
-        <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Início</NavLink>
-        <NavLink to="/movies" onClick={() => setIsMobileMenuOpen(false)}>Filmes</NavLink>
-        <NavLink to="/popular" onClick={() => setIsMobileMenuOpen(false)}>Populares</NavLink>
-        <MobileSearchContainer>
+        <SearchContainerMobile>
           <form onSubmit={handleSearch}>
+            <i className="pi pi-search"></i>
+            <SearchInput
+              ref={mobileSearchRef}
+              type="text"
+              placeholder="Buscar filmes..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                debouncedSearch(e.target.value);
+              }}
+              autoComplete="off"
+            />
+          </form>
+        </SearchContainerMobile>
+      </NavWrapper>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
+      <MobileNav className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+        <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>
+          Início
+        </NavLink>
+        <NavLink to="/movies" onClick={() => setIsMobileMenuOpen(false)}>
+          Filmes
+        </NavLink>
+        <NavLink to="/popular" onClick={() => setIsMobileMenuOpen(false)}>
+          Populares
+        </NavLink>
+        {/* <MobileSearchContainer>
+          <form onSubmit={handleSearch}>
+            <i className="pi pi-search"></i>
             <SearchInput
               type="text"
               placeholder="Buscar filmes..."
@@ -374,8 +489,8 @@ export const Navbar = () => {
               autoComplete="off"
             />
           </form>
-        </MobileSearchContainer>
+        </MobileSearchContainer> */}
       </MobileNav>
     </>
   );
-}; 
+};

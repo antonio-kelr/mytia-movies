@@ -15,6 +15,11 @@ const Container = styled.div`
   
   background-color: #f5f5f5;
   margin-top: 100px;
+  
+  @media (max-width: 960px) {
+    margin-top: 135px;
+  }
+
 `;
 
 const Content = styled.div`
