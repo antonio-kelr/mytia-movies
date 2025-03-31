@@ -77,53 +77,75 @@ npm test -- --watch
 
 ## 📁 Estrutura do Projeto
 
-\`\`\`
+```
 src/
-├── components/           # Componentes reutilizáveis
-│   ├── Layout/          # Layout principal da aplicação
+│
+├── components/
+│   ├── Layout/
 │   │   ├── Layout.tsx
 │   │   └── Layout.styles.ts
-│   ├── MovieCard/       # Componente de card de filme
+│   │
+│   ├── MovieCard/
 │   │   ├── MovieCard.tsx
 │   │   ├── MovieCard.test.tsx
 │   │   └── MovieCard.styles.ts
-│   ├── MovieCarousel/   # Carrossel de filmes
+│   │
+│   ├── MovieCarousel/
 │   │   ├── MovieCarousel.tsx
 │   │   ├── MovieCarousel.test.tsx
 │   │   └── MovieCarousel.styles.ts
-│   └── Navbar/          # Barra de navegação
+│   │
+│   └── Navbar/
 │       ├── Navbar.tsx
 │       ├── Navbar.test.tsx
 │       └── Navbar.styles.ts
-├── hooks/               # Hooks customizados
-│   ├── useMovies.ts     # Hook para gerenciamento de filmes
+│
+├── hooks/
+│   ├── useMovies.ts
 │   └── useMovies.test.ts
-├── pages/               # Páginas da aplicação
-│   ├── Home/           # Página inicial
+│
+├── pages/
+│   ├── Home/
 │   │   ├── Home.tsx
 │   │   └── Home.styles.ts
-│   ├── Movies/         # Lista de filmes
+│   │
+│   ├── Movies/
 │   │   ├── Movies.tsx
 │   │   └── Movies.styles.ts
-│   └── MovieDetails/   # Detalhes do filme
+│   │
+│   └── MovieDetails/
 │       ├── MovieDetails.tsx
 │       └── MovieDetails.styles.ts
-├── services/           # Serviços e configurações
-│   ├── api.ts         # Configuração do Axios
-│   ├── movie.service.ts    # Serviço de filmes
+│
+├── services/
+│   ├── api.ts
+│   ├── movie.service.ts
 │   ├── movie.service.test.ts
+│   │
 │   └── config/
 │       └── axios.ts
-├── styles/            # Estilos
-│   ├── globalStyles.ts        # Estilos globais
-│   ├── components/    # Estilos dos componentes
-│   └── pages/        # Estilos das páginas
-├── test/             # Configuração de testes
-│   ├── setup.ts      # Configuração do ambiente de testes
-│   └── mocks/        # Mocks para testes
-└── types/            # Definições de tipos TypeScript
-    └── movie.ts      # Tipos relacionados a filmes
-\`\`\`
+│
+├── styles/
+│   ├── globalStyles.ts
+│   │
+│   ├── components/
+│   │   ├── Layout.styles.ts
+│   │   ├── MovieCard.styles.ts
+│   │   ├── MovieCarousel.styles.ts
+│   │   └── Navbar.styles.ts
+│   │
+│   └── pages/
+│       ├── Home.styles.ts
+│       ├── MovieDetails.styles.ts
+│       └── MovieList.styles.ts
+│
+├── test/
+│   ├── setup.ts
+│   └── mocks/
+│
+└── types/
+    └── movie.ts
+```
 
 ## ⚙️ Configuração do Ambiente
 
