@@ -125,6 +125,26 @@ src/
     └── movie.ts      # Tipos relacionados a filmes
 \`\`\`
 
+## ⚙️ Configuração do Ambiente
+
+1. Clone o repositório
+2. Copie o arquivo de exemplo de variáveis de ambiente:
+```bash
+cp .env.example .env
+```
+3. Obtenha sua chave de API do TMDB (instruções abaixo) e adicione ao arquivo .env
+4. Instale as dependências:
+```bash
+npm install
+```
+5. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
+
+### ⚠️ Importante
+O arquivo `.env` contém informações sensíveis e não deve ser commitado. Use o arquivo `.env.example` como template para configurar seu ambiente local.
+
 ## 🔑 Obtendo a Chave da API TMDb
 
 1. Acesse [https://www.themoviedb.org/](https://www.themoviedb.org/)
