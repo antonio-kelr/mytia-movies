@@ -87,7 +87,61 @@ src/
   ├── types/          # Tipos TypeScript
   └── utils/          # Funções utilitárias
 ```
+## 🐳 Rodando com Docker
+
+### Pré-requisitos
+- Docker
+- Docker Compose
+
+### Usando Docker Compose (Recomendado)
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/mytia-movies.git
+cd mytia-movies
+```
+
+2. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env
+```
+
+3. Adicione sua chave da API do TMDB ao arquivo .env
+
+4. Inicie o container com Docker Compose:
+```bash
+docker-compose up
+```
+
+O aplicativo estará disponível em `http://localhost:5173`
+
+### Comandos Docker Úteis
+
+```bash
+# Iniciar os containers em background
+docker-compose up -d
+
+# Parar os containers
+docker-compose down
+
+# Ver logs
+docker-compose logs -f
+
+# Rebuildar a imagem (após mudanças no Dockerfile)
+docker-compose up --build
+```
+
+### Estrutura Docker
+
+O projeto utiliza:
+- `Dockerfile`: Configuração da imagem do container
+- `docker-compose.yml`: Orquestração dos serviços
+- Node.js Alpine como imagem base para melhor performance
+- Volume montado para desenvolvimento com hot-reload
+
 ## ⚙️ Configuração do Ambiente
+
+### Instalação Local (Sem Docker)
 
 1. Clone o repositório
 2. Copie o arquivo de exemplo de variáveis de ambiente:
