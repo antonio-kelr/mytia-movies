@@ -26,6 +26,9 @@ MyTia Movies é uma plataforma que oferece:
 - Axios (para requisições HTTP)
 - Styled Components (para estilização)
 - Docker (para containerização)
+- Vitest (para testes unitários e de integração)
+- Testing Library (para testes de componentes React)
+- Jest DOM (para asserções específicas do DOM)
 
 ### React Hooks Utilizados
 - `useState`: Gerenciamento de estado local
@@ -36,109 +39,88 @@ MyTia Movies é uma plataforma que oferece:
 - Hooks Customizados:
   - `useMovies`: Hook personalizado para gerenciar o estado e lógica relacionada aos filmes
 
-## 📋 Pré-requisitos
+## 🧪 Testes
 
-### Para rodar com Docker (Recomendado)
-- Docker
-- Docker Compose
+### Ferramentas de Teste
+- **Vitest**: Framework de testes rápido e moderno, compatível com Jest
+- **Testing Library**: Suite de utilitários para testar componentes React
+- **Jest DOM**: Extensões de matcher para testes DOM
 
-### Para desenvolvimento local
-- Node.js (versão 20 ou superior)
-- npm ou yarn
-- Chave de API do TMDb
+### Tipos de Testes
+- **Testes Unitários**: Testagem isolada de funções e componentes
+- **Testes de Integração**: Verificação da interação entre componentes
+- **Testes de Serviços**: Validação das chamadas à API e manipulação de dados
 
-## 🔧 Configuração e Instalação
-
-### 🐳 Usando Docker (Recomendado)
-
-1. Clone o repositório:
+### Como Executar os Testes
 \`\`\`bash
-git clone https://github.com/seu-usuario/mytia-movies.git
-cd mytia-movies
+# Executar todos os testes
+npm test
+
+# Executar testes com coverage
+npm test -- --coverage
+
+# Executar testes em modo watch
+npm test -- --watch
 \`\`\`
 
-2. Configure as variáveis de ambiente:
-   - Crie um arquivo \`.env\` na raiz do projeto:
-   \`\`\`env
-   VITE_TMDB_API_KEY=sua_chave_api_aqui
-   \`\`\`
+### Estrutura de Testes
+- Arquivos de teste são localizados junto aos arquivos que testam
+- Nomenclatura: `*.test.ts` ou `*.test.tsx`
+- Testes são organizados em suites usando `describe` e casos usando `it`
 
-3. Inicie o container:
-\`\`\`bash
-docker-compose up
-\`\`\`
-
-O aplicativo estará disponível em \`http://localhost:5173\`
-
-### 💻 Instalação Local
-
-1. Clone o repositório:
-\`\`\`bash
-git clone https://github.com/seu-usuario/mytia-movies.git
-cd mytia-movies
-\`\`\`
-
-2. Instale as dependências:
-\`\`\`bash
-npm install
-\`\`\`
-
-3. Configure as variáveis de ambiente:
-   - Crie um arquivo \`.env\` na raiz do projeto:
-   \`\`\`env
-   VITE_TMDB_API_KEY=sua_chave_api_aqui
-   \`\`\`
-
-4. Inicie o servidor de desenvolvimento:
-\`\`\`bash
-npm run dev
-\`\`\`
-
-## 🎯 Funcionalidades Detalhadas
-
-### Lista de Filmes Populares
-- Exibição dos filmes mais populares do momento
-- Atualização em tempo real
-- Paginação para navegar através do catálogo
-
-### Busca de Filmes
-- Busca por título
-- Resultados instantâneos
-- Filtragem avançada
-
-### Detalhes do Filme
-- Informações completas sobre cada filme
-- Sinopse
-- Classificação
-- Data de lançamento
-- Elenco principal
-
-### Interface Responsiva
-- Design adaptável para diferentes tamanhos de tela
-- Experiência otimizada para dispositivos móveis
-- Navegação intuitiva
+### Exemplos de Testes
+- Testes de Serviços: Validação de chamadas à API
+- Testes de Componentes: Verificação de renderização e interação
+- Testes de Hooks: Validação de comportamento de hooks customizados
 
 ## 📁 Estrutura do Projeto
 
 \`\`\`
 src/
 ├── components/           # Componentes reutilizáveis
-│   ├── Layout/          # Layout principal
-│   ├── MovieCard/       # Card de filme
+│   ├── Layout/          # Layout principal da aplicação
+│   │   ├── Layout.tsx
+│   │   └── Layout.styles.ts
+│   ├── MovieCard/       # Componente de card de filme
+│   │   ├── MovieCard.tsx
+│   │   ├── MovieCard.test.tsx
+│   │   └── MovieCard.styles.ts
 │   ├── MovieCarousel/   # Carrossel de filmes
+│   │   ├── MovieCarousel.tsx
+│   │   ├── MovieCarousel.test.tsx
+│   │   └── MovieCarousel.styles.ts
 │   └── Navbar/          # Barra de navegação
+│       ├── Navbar.tsx
+│       ├── Navbar.test.tsx
+│       └── Navbar.styles.ts
 ├── hooks/               # Hooks customizados
-│   └── useMovies.ts     # Hook para gerenciamento de filmes
+│   ├── useMovies.ts     # Hook para gerenciamento de filmes
+│   └── useMovies.test.ts
 ├── pages/               # Páginas da aplicação
 │   ├── Home/           # Página inicial
+│   │   ├── Home.tsx
+│   │   └── Home.styles.ts
 │   ├── Movies/         # Lista de filmes
+│   │   ├── Movies.tsx
+│   │   └── Movies.styles.ts
 │   └── MovieDetails/   # Detalhes do filme
+│       ├── MovieDetails.tsx
+│       └── MovieDetails.styles.ts
 ├── services/           # Serviços e configurações
-│   └── api.ts         # Configuração do Axios
+│   ├── api.ts         # Configuração do Axios
+│   ├── movie.service.ts    # Serviço de filmes
+│   ├── movie.service.test.ts
+│   └── config/
+│       └── axios.ts
 ├── styles/            # Estilos
-│   ├── global/        # Estilos globais
-│   └── components/    # Estilos dos componentes
-└── types/             # Definições de tipos TypeScript
+│   ├── globalStyles.ts        # Estilos globais
+│   ├── components/    # Estilos dos componentes
+│   └── pages/        # Estilos das páginas
+├── test/             # Configuração de testes
+│   ├── setup.ts      # Configuração do ambiente de testes
+│   └── mocks/        # Mocks para testes
+└── types/            # Definições de tipos TypeScript
+    └── movie.ts      # Tipos relacionados a filmes
 \`\`\`
 
 ## 🔑 Obtendo a Chave da API TMDb
