@@ -63,6 +63,22 @@ describe('Movie Service', () => {
       await expect(getPopularMovies()).rejects.toThrow(errorMessage);
       expect(api.get).toHaveBeenCalledWith('/movie/popular', { params: { page: 1 } });
     });
+
+    it('deve retornar dados de paginação corretos', async () => {
+      const paginatedResponse = {
+        ...mockMovieResponse,
+        page: 2,
+        total_pages: 10,
+        total_results: 200
+      };
+      api.get = vi.fn().mockResolvedValue({ data: paginatedResponse });
+
+      const response = await getPopularMovies(2);
+      
+      expect(response.data.page).toBe(2);
+      expect(response.data.total_pages).toBe(10);
+      expect(response.data.total_results).toBe(200);
+    });
   });
 
   describe('searchMovies', () => {
@@ -94,6 +110,23 @@ describe('Movie Service', () => {
 
       await expect(searchMovies(query)).rejects.toThrow(errorMessage);
       expect(api.get).toHaveBeenCalledWith('/search/movie', { params: { query } });
+    });
+
+    it('deve retornar dados de paginação na busca', async () => {
+      const paginatedResponse = {
+        ...mockMovieResponse,
+        page: 1,
+        total_pages: 5,
+        total_results: 100
+      };
+      api.get = vi.fn().mockResolvedValue({ data: paginatedResponse });
+      const query = 'test movie';
+
+      const response = await searchMovies(query);
+      
+      expect(response.data.page).toBe(1);
+      expect(response.data.total_pages).toBe(5);
+      expect(response.data.total_results).toBe(100);
     });
   });
 
