@@ -77,52 +77,10 @@ npm test -- --watch
 
 ## 📁 Estrutura do Projeto
 
-\`\`\`
-src/
-├── components/
-│   ├── Layout/
-│   │   ├── Layout.tsx
-│   │   └── Layout.styles.ts
-│   ├── MovieCard/
-│   │   ├── MovieCard.tsx
-│   │   ├── MovieCard.test.tsx
-│   │   └── MovieCard.styles.ts
-│   ├── MovieCarousel/
-│   │   ├── MovieCarousel.tsx
-│   │   ├── MovieCarousel.test.tsx
-│   │   └── MovieCarousel.styles.ts
-│   └── Navbar/
-│       ├── Navbar.tsx
-│       ├── Navbar.test.tsx
-│       └── Navbar.styles.ts
-├── hooks/
-│   ├── useMovies.ts
-│   └── useMovies.test.ts
-├── pages/
-│   ├── Home/
-│   │   ├── Home.tsx
-│   │   └── Home.styles.ts
-│   ├── Movies/
-│   │   ├── Movies.tsx
-│   │   └── Movies.styles.ts
-│   └── MovieDetails/
-│       ├── MovieDetails.tsx
-│       └── MovieDetails.styles.ts
-├── services/
-│   ├── api.ts
-│   ├── movie.service.ts
-│   ├── movie.service.test.ts
-│   └── config/
-│       └── axios.ts
-├── styles/
-│   ├── globalStyles.ts
-│   ├── components/
-│   └── pages/
-├── test/
-│   ├── setup.ts
-│   └── mocks/
-└── types/
-    └── movie.ts
+
+
+
+
 
 \`\`\`
 
